@@ -77,12 +77,12 @@ contract Auction{
 
 // We check if the bidder eth balance is greater than the minimum bid and highestbid
     function PlaceBid() public payable{
+        require(started, "Auction have not started or ended");
+        require(msg.sender != address(0)); // sanity check
         if(block.timestamp >= lastcaller + 5 minutes | endAt){
             endAuction();
         }
         else{
-            require(started, "Auction have not started or ended");
-            require(msg.sender != address(0)); // sanity check
             require(msg.value > highestBid, "There's an higher bid");
             Bid storage bid = bidder[msg.sender];
             bid.amount += msg.value;
